@@ -16,7 +16,6 @@ type gitrepo struct {
 	initialized       bool
 	unCommitedChanges bool
 	lastCommitContent string
-	file              os.File
 }
 
 func (repo gitrepo) GetDir() string {
@@ -41,7 +40,7 @@ func (repo *gitrepo) Init() error {
 	exec.Command("git", "init", repo.dir).Run()
 
 	// теперь создаём файл
-	file, err := os.Create(repo.dir + "output.txt")
+	file, err := os.Create(repo.dir + "/output.txt")
 	// закрываем файл
 	defer file.Close()
 	if err != nil {
@@ -95,7 +94,7 @@ func NewGitRepo(repoDir string) gitrepo {
 		//log.Fatal("git repo directory " + repoDir + " is already exists") todo не забыть раскомметировать потом, мазафака
 	}
 
-	repo := gitrepo{abspath, false, false, "-", nil}
+	repo := gitrepo{abspath, false, false, "-"}
 	repo.Init()
 
 	return repo
