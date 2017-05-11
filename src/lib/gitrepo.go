@@ -52,15 +52,17 @@ func (repo *gitrepo) Init() error {
 
 func (repo *gitrepo) NewCommit(date string) error {
 	// меняем содержимое файла
-	file, err := os.OpenFile("output.txt", os.O_TRUNC|os.O_RDWR, 0777)
+	file, err := os.OpenFile(repo.dir + "/output.txt", os.O_TRUNC|os.O_RDWR, 0777)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 	// пишем туда
 	if repo.lastCommitContent == "+" {
 		_, err = file.Write([]byte("-"))
+		repo.lastCommitContent = "-"
 	} else {
 		_, err = file.Write([]byte("+"))
+		repo.lastCommitContent = "+"
 	}
 	if err != nil {
 		log.Fatal(err.Error())
@@ -69,10 +71,14 @@ func (repo *gitrepo) NewCommit(date string) error {
 	file.Close()
 
 	// добавляем изменения в индекс (git add)
-	exec.Command("git", "add", repo.dir).Run()
+	command := exec.Command("git", "add", "output.txt")
+	command.Dir = repo.dir
+	command.Run()
 
 	// коммитимся (git commit -q --date "2017-01-01 12:00:02" -m "+")
-	exec.Command("git", "commit", repo.dir, "-q", "--date", "\"" + date + "\"", "-m", "\"+\"").Run()
+	command = exec.Command("git", "commit", "-q", "--date", "\"" + date + "\"", "-m", "\"+\"")
+	command.Dir = repo.dir
+	command.Run()
 
 	return nil
 }

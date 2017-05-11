@@ -12,6 +12,7 @@ import (
 	"image/png"
 	"lib"
 	"time"
+	"strconv"
 )
 
 func getImagePath() (string, error) {
@@ -68,8 +69,6 @@ func main() {
 	// отлично, переходим к созданию репозитория гита, мать его
 	gitrepo := lib.NewGitRepo("test")
 
-	fmt.Println(gitrepo)
-
 	// дальше получем дату на год назад и и топаем вперед до понедельника
 	date := time.Now()
 	date = date.AddDate(-1, 0, 0)
@@ -77,18 +76,26 @@ func main() {
 		date = date.AddDate(0, 0, 1)
 	}
 
+	// теперь округляем дату - отбрасываем нафиг часы, минуты и секунды
+	date = date.Add(time.Duration(-1*date.Second()) * time.Second)
+	date = date.Add(time.Duration(-1*date.Minute()) * time.Minute)
+	date = date.Add(time.Duration(-1*date.Hour()) * time.Hour)
+
 	// отлично, мы нашли стартовый день - теперь перебираем данные из календарных данных и фигачим коммиты
 	for i := 0; i < len(calendarResult); i++{ // недели
+		fmt.Println("week " + strconv.Itoa(i))
 		for l := 0; l < len(calendarResult[i]); l++ { // дни в неделе
+			fmt.Println("day " + strconv.Itoa(l))
 			tempDate := date // создаём временную дату, чтобы там изгаляться с секундами
 			// теперь делаем столько коммитов, сколько у нас процент заполненности дня
 			// (это для простоты, чтобы один процентаж не перегонять в другой)
 			for m := 0; m <calendarResult[i][l]; m++{
+				fmt.Println("commit " + strconv.Itoa(m))
 				gitrepo.NewCommit(tempDate.Format("2006-01-02 15:04:05"))
-				tempDate.Add(time.Second) // переводим временную дату на секунду вперед
+				tempDate = tempDate.Add(time.Second) // переводим временную дату на секунду вперед
 			}
 			// отлично, коммиты за день готовы - топаем на день вперед
-			date.AddDate(0, 0, 1)
+			date = date.AddDate(0, 0, 1)
 		}
 	}
 
