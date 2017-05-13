@@ -2,3 +2,4 @@ language: go
 
 go:
   - 1.7.x
+go_import_path: src/github.com/jizuscreed/src/
