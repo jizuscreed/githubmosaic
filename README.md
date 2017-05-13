@@ -7,7 +7,7 @@ This app generates git repo with commits from a custom image which paint the ima
 ![](http://jizuscreed.ru/images/mosaic.png)
 
 #### Installation
-1. Clone repository from github
+1. Clone repository from github. Add repo dir to GOPATH
 2. Build it by ``go build mosaic.go``
 
 #### Using
