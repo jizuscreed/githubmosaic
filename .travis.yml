@@ -3,5 +3,5 @@ language: go
 go:
   - 1.7.x
 install:
-- export GOPATH="$HOME/gopath/src/github.com/jizuscreed/githubmosaic/src/"
+- export GOPATH="$HOME/gopath/src/github.com/jizuscreed/githubmosaic/"
 
