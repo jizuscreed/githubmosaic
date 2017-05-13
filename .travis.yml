@@ -2,4 +2,5 @@ language: go
 
 go:
   - 1.7.x
-go_import_path: src/github.com/jizuscreed/src/
+install:
+- # Do nothing. This is needed to prevent default install action "go get -t -v ./..." from happening here (we want it to happen inside script step).
