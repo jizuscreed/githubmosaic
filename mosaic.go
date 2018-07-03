@@ -8,7 +8,7 @@ import (
 	"image"
 	"image/jpeg"
 	"image/png"
-	"lib"
+	"githubmosaic/lib"
 	"time"
 	"strconv"
 )

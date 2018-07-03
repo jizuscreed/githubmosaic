@@ -6,6 +6,7 @@ import (
 	"log"
 	"image"
 	"fmt"
+	"strconv"
 )
 /**
  возвращает текущую директорию
@@ -48,8 +49,9 @@ func GetCalendarDataFromImage(imgFile *os.File) CalendarData {
 		log.Fatal("Can not decode image file")
 	}
 	imgWidth, imgHeight := imgCfg.Width, imgCfg.Height
-	fmt.Println(imgWidth)
-	fmt.Println(imgHeight)
+
+	fmt.Println("imgWidth : " + strconv.Itoa(imgWidth))
+	fmt.Println("imgHeight : " + strconv.Itoa(imgHeight))
 	// потрачено, начинаем читать из файла ()для начала перематываем назад ридер из файла, а то всё вальнется
 	imgFile.Seek(0, 0)
 	// получаем декодированное изображение
@@ -58,15 +60,15 @@ func GetCalendarDataFromImage(imgFile *os.File) CalendarData {
 	// определяем максимальные точки перебора
 	var maxWidth int = imgWidth - imgWidth % WEEKS
 	var maxHeight int = imgHeight - imgHeight % DAYS
-	fmt.Println(maxWidth)
-	fmt.Println(maxHeight)
+	fmt.Println("maxWidth : " + strconv.Itoa(maxWidth))
+	fmt.Println("maxHeight : " + strconv.Itoa(maxHeight))
 
 
 	var dayWidth int = int(maxWidth / WEEKS)
 	var dayHeight int = int(maxHeight / DAYS)
 
-	fmt.Println(dayWidth)
-	fmt.Println(dayHeight)
+	fmt.Println("dayWidth : " + strconv.Itoa(dayWidth))
+	fmt.Println("dayHeight : " + strconv.Itoa(dayHeight))
 
 	// перебираем пиксели и зажигаем пионерские костры
 	for y := 0; y < maxHeight; y++ { // ползем по высоте
